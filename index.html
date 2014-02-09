@@ -16,7 +16,7 @@
 
     <div id="resourceapp">
       <div class="title">
-        <h1>Resources</h1>
+        <h2>QEDC Resource Management</h2>
       </div>
 
       <div class="content">
@@ -100,11 +100,23 @@
     </script>
 	
 	<script type="text/template" id="form-entry-template">
-     <div class ="view">
+     <div class ="resource-entry-form">
 	 	<form class="entry-form">
 	      Name: <input type="text" id="name" /> <br>
-	      PhoneNumber <input type="text" id="telephone-number" />
-	      <button>Save</button>
+	      PhoneNumber <input type="text" id="telephone-number" /> <br>
+		  Website: <input type="text" id="website" /> <br>
+		  Twitter: <input type="text" id="twitter" /> <br>
+		  Facebook: <input type="text" id="facebook" /> <br>
+		  Address: <input type="text" id="address" /> <br>
+		  City: <input type="text" id="city" /> State <input type="text" id="state" /> Zip<input type="text" id="zip" /> <br>
+		  Description: <textarea rows="3" cols="50" id="description" /> <br>
+		  Specialty: <input type="text" id="specialty" /> <br>
+		  
+		  Language <input type ="checkbox" id="english-checkbox"/> English 
+		  <input type ="checkbox" id="spanish-checkbox"/> Spanish <input type ="checkbox" id="mandarin-checkbox"/> Mandarin<input type ="checkbox" id="cantonese-checkbox"/> Cantonese <br>
+	      
+		  
+		  <button id = "save-button" > Save</button>
 	    </form>
 	 </div>
     </script>

@@ -16,8 +16,9 @@ $(function() {
   var Resource = Parse.Object.extend("Resource", {
     // Default attributes for the Resource.
     defaults: {
-	  Name : "cc",
-	  PhoneNumber : "111-666-9999",
+	  Name: "cc",
+	  PhoneNumber: "111-666-9999",
+	  Language: "English"
     },
 
     // Ensure that each resource created has `content`.
@@ -28,8 +29,8 @@ $(function() {
 	 if (!this.get("PhoneNumber")) {
         this.set({"PhoneNumber": this.defaults.PhoneNumber});	
       }
-	 if (!this.get("Name")) {
-        this.set({"Name": this.defaults.Name});
+	 if (!this.get("Language")) {
+        this.set({"Language": this.defaults.Language});
 		}
      		
     },
@@ -150,12 +151,8 @@ $(function() {
 
     // Delegated events for creating new items, and clearing completed ones.
     events: {
-     // "keypress #new-resource":  "createOnEnter",
-     // "click #clear-completed": "clearCompleted",
-     // "click #toggle-all": "toggleAllComplete",
-      "click .log-out": "logOut",
-     // "click ul#filters a": "selectFilter",
-	  "click #newResource": "showNewResource"
+     "click .log-out": "logOut",
+     "click #newResource": "showNewResource"
     },
 
     el: ".content",
@@ -166,24 +163,16 @@ $(function() {
     initialize: function() {
       var self = this;
 
-      _.bindAll(this, 'addOne', 'addAll', 'addSome', 'render', 'toggleAllComplete', 'logOut', 'createOnEnter', 'showNewResource');
+      _.bindAll(this, 'render', 'logOut',  'showNewResource');
 
       // Main resource management template
       this.$el.html(_.template($("#manage-resources-template").html()));
       
-   //   this.input = this.$("#new-resource");
-   //   this.allCheckbox = this.$("#toggle-all")[0];
-
-      // Create our collection of Todos
+      // Create our collection of Resources
       this.resources = new ResourceList;
 
       // Setup the query for the collection to look for resources from the current user
-      this.resources.query = new Parse.Query(Resource);
-      //this.resources.query.equalTo("user", Parse.User.current());
-        
-//      this.resources.bind('add',     this.addOne);
-//      this.resources.bind('reset',   this.addAll);
-//      this.resources.bind('all',     this.render);
+      this.resources.query = new Parse.Query(Resource);   
 
       // Fetch all the resource items for this user
       this.resources.fetch({
@@ -199,8 +188,7 @@ $(function() {
           alert(error);
        }
      });
-    //  this.resources.each(this.addOne);
-
+   
       state.on("change", this.addAll, this);
     },
 
@@ -229,81 +217,6 @@ $(function() {
       this.allCheckbox.checked = !remaining;
     },
 
-    // Filters the list based on which type of filter is selected
-    selectFilter: function(e) {
-      var el = $(e.target);
-      var filterValue = el.attr("id");
-      state.set({filter: filterValue});
-      Parse.history.navigate(filterValue);
-    },
-
-    filter: function() {
-      var filterValue = state.get("filter");
-      this.$("ul#filters a").removeClass("selected");
-      this.$("ul#filters a#" + filterValue).addClass("selected");
-      if (filterValue === "all") {
-        this.addAll();
-      } else if (filterValue === "completed") {
-        this.addSome(function(item) { return item.get('done') });
-      } else {
-        this.addSome(function(item) { return !item.get('done') });
-      }
-    },
-
-    // Resets the filters to display all resources
-    resetFilters: function() {
-      this.$("ul#filters a").removeClass("selected");
-      this.$("ul#filters a#all").addClass("selected");
-      this.addAll();
-    },
-
-    // Add a single resource item to the list by creating a view for it, and
-    // appending its element to the `<ul>`.
-    addOne: function(resource) {
-      var view = new ResourceView({model: resource});
-      this.$("#resource-list").append(view.render().el);
-    },
-
-    // Add all items in the Todos collection at once.
-    addAll: function(collection, filter) {
-      this.$("#resource-list").html("");
-      this.resources.each(this.addOne);
-    },
-
-    // Only adds some resources, based on a filtering function that is passed in
-    addSome: function(filter) {
-      var self = this;
-      this.$("#resource-list").html("");
-      this.resources.each(function(item) { self.addOne(item) });
-    },
-
-    // If you hit return in the main input field, create new Todo model
-    createOnEnter: function(e) {
-      var self = this;
-      if (e.keyCode != 13) return;
-
-      this.resources.create({
-        Name: this.input.val(),
-        order:   this.resources.nextOrder(),
-        user:    Parse.User.current(),
-        ACL:     new Parse.ACL(Parse.User.current())
-      });
-
-      this.input.val('');
-      this.resetFilters();
-    },
-
-    // Clear all done resource items, destroying their models.
-    clearCompleted: function() {
-      _.each(this.resources.done(), function(resource){ resource.destroy(); });
-      return false;
-    },
-
-    toggleAllComplete: function () {
-      var done = this.allCheckbox.checked;
-      //this.resources.each(function (resource) { resource.save({'done': done}); });
-    },
-	
 	showNewResource: function () {
 	    
 	    new FormEntryView();
@@ -394,29 +307,77 @@ $(function() {
 	savePressed: function(e) {
 	
 	  var self = this;
-
-	  if(this.model) {
-		this.model.set("Name", this.$("#name").val());
-		this.model.set("PhoneNumber", this.$("#telephone-number").val());
-		this.model.save();
-      } else {
-	  this.resources.create({
-        Name: this.$("#name").val(),
-		PhoneNumber: this.$("#telephone-number").val(),
-        ACL:     new Parse.ACL(Parse.User.current())
-      });
-	  }
 	  
+	  if (!this.model){ 
+	  this.model = new Resource();
+	  }
+
+	  this.model.set("Name", this.$("#name").val());
+	  this.model.set("PhoneNumber", this.$("#telephone-number").val());
+	  this.model.set("Language",this.getCheckboxString());
+	  this.model.set("Website", this.$("#website").val());
+	  this.model.set("Twitter", this.$("#twitter").val());
+	  this.model.set("Facebook", this.$("#facebook").val());
+	  this.model.set("Address", this.$("#address").val());
+	  this.model.set("City", this.$("#city").val());
+	  this.model.set("State", this.$("#state").val());
+	  this.model.set("Zip", this.$("#zip").val());
+	  this.model.set("Description", this.$("#description").val());
+	  this.model.set("Specialty", this.$("#specialty").val());
+	  this.model.save();
 	  
 	   new ManageResourcesView();
        self.undelegateEvents();
        delete self;
 	},
 	
+	getCheckboxString: function(){
+	 var checkboxString="";
+	 if(this.$("#english-checkbox").is(':checked')){
+		checkboxString = "English, ";
+	 }
+	 if(this.$("#spanish-checkbox").is(':checked')){
+		checkboxString = checkboxString + "Spanish, ";
+	 }
+	 if(this.$("#cantonese-checkbox").is(':checked')){
+		checkboxString = checkboxString + "Cantonese, ";
+	 }
+	 if(this.$("#mandarin-checkbox").is(':checked')){
+		checkboxString = checkboxString + "Mandarin";	
+	 }
+	 return checkboxString;
+	 
+	 },
+	 
+	 setCheckboxes: function(checkboxString) {
+	  if (checkboxString.indexOf("English") != -1){
+	    this.$("#english-checkbox").attr('checked','checked');
+	  }
+	  if (checkboxString.indexOf("Spanish") != -1){
+	    this.$("#spanish-checkbox").attr('checked','checked');
+	  }
+	  if (checkboxString.indexOf("Mandarin") != -1){
+	    this.$("#mandarin-checkbox").attr('checked','checked');
+	  }
+	  if (checkboxString.indexOf("Cantonese") != -1){
+	    this.$("#cantonese-checkbox").attr('checked','checked');
+	  }  
+	 },
+	
 	setModel: function(model) {
 		this.model = model;
 		this.$("#name").val(model.get("Name"));
 		this.$("#telephone-number").val(model.get("PhoneNumber"));
+		this.setCheckboxes(model.get("Language"));
+		this.$("#website").val(model.get("Website"));
+		this.$("#twitter").val(model.get("Twitter"));
+		this.$("#facebook").val(model.get("Facebook"));
+		this.$("#address").val(model.get("Address"));
+		this.$("#city").val(model.get("City"));
+		this.$("#state").val(model.get("State"));
+		this.$("#zip").val(model.get("Zip"));
+		this.$("#description").val(model.get("Description"));
+		this.$("#specialty").val(model.get("Specialty"));	
 	},
 	
 	 render: function() {
