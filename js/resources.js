@@ -407,9 +407,10 @@ $(function() {
       });
 	  }
 	  
-	  new ManageResourcesView();
-      self.undelegateEvents();
-      delete self;
+	  
+	   new ManageResourcesView();
+       self.undelegateEvents();
+       delete self;
 	},
 	
 	setModel: function(model) {
