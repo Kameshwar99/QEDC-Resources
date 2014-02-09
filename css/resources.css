@@ -31,7 +31,7 @@ body {
     font-smoothing: antialiased;
 }
 
-#todoapp {
+#resourceapp {
     background: #fff;
     background: rgba(255, 255, 255, 0.9);
     margin: 130px 0 40px 0;
@@ -43,28 +43,18 @@ body {
     0 25px 50px 0 rgba(0, 0, 0, 0.15);
 }
 
-#todoapp:before {
-    content: '';
-    border-left: 1px solid #f5d6d6;
-    border-right: 1px solid #f5d6d6;
-    width: 2px;
-    position: absolute;
-    top: 45px;
-    top: 0px;
-    left: 40px;
-    height: 100%;
-}
 
-#todoapp input::-webkit-input-placeholder {
+
+#resourceapp input::-webkit-input-placeholder {
     font-style: italic;
 }
 
-#todoapp input:-moz-placeholder {
+#resourceapp input:-moz-placeholder {
     font-style: italic;
     color: #a9a9a9;
 }
 
-#todoapp h1 {
+#resourceapp h1 {
     position: absolute;
     top: -120px;
     width: 100%;
@@ -216,11 +206,7 @@ label[for='toggle-all'] {
 }
 
 #resource-list li.editing .view 
-
-
-
-
- {
+{
     display: none;
 }
 
@@ -273,39 +259,20 @@ label[for='toggle-all'] {
 }
 
 #resource-list li .resource-destroy {
-    display: none;
     position: absolute;
     top: 0;
     right: 10px;
     bottom: 0;
-    width: 40px;
+    width: 80px;
     height: 40px;
     margin: auto 0;
     font-size: 22px;
-    color: #a88a8a;
+    color: #D11A1B;
     -webkit-transition: all 0.2s;
     -moz-transition: all 0.2s;
     -ms-transition: all 0.2s;
     -o-transition: all 0.2s;
     transition: all 0.2s;
-}
-
-#resource-list li .resource-destroy:hover {
-    text-shadow: 0 0 1px #000,
-    0 0 10px rgba(199, 107, 107, 0.8);
-    -webkit-transform: scale(1.3);
-    -moz-transform: scale(1.3);
-    -ms-transform: scale(1.3);
-    -o-transform: scale(1.3);
-    transform: scale(1.3);
-}
-
-#resource-list li .resource-destroy:after {
-    content: '✖';
-}
-
-#resource-list li:hover .resource-destroy {
-    display: block;
 }
 
 #resource-list li .edit {
@@ -410,18 +377,18 @@ label[for='toggle-all'] {
     }
 }
 
-#todoapp .content .login {
+#resourceapp .content .login {
     width: 350px;
     margin: 45px auto 25px auto;
 }
 
-#todoapp .content .login h2 {
+#resourceapp .content .login h2 {
     font-weight: normal;
     font-size: 25px;
     margin-bottom: 20px;
 }
 
-#todoapp .content .login input {
+#resourceapp .content .login input {
     display: block;
     margin-bottom: 10px;
     font-size: 20px;
@@ -429,11 +396,11 @@ label[for='toggle-all'] {
     width: 340px;;
 }
 
-#todoapp .content .login .signup-form {
+#resourceapp .content .login .signup-form {
     margin-top: 25px;
 }
 
-#todoapp .content .login button {
+#resourceapp .content .login button {
     padding: 5px 10px;
     background: #eee;
     font-size: 20px;
@@ -443,22 +410,28 @@ label[for='toggle-all'] {
     font-family: "Helvetica Neue";
 }
 
-#todoapp .content .login .error {
+#resourceapp .content .login .error {
     border: 1px solid red;
     background: #FDEFF0;
     padding: 5px 15px;
     margin-bottom: 15px;
 }
 
-#todoapp .content #user-info {
+#resourceapp .content #user-info {
     padding: 5px 10px;
     border-top: 1px solid #ededed;
     margin-bottom: 0px;
     text-align: right;
 }
 
+#resourceapp .content #new-Resource {
+    padding: 5px 10px;
+    border-top: 1px solid #ededed;
+    margin-bottom: 0px;
+    text-align: right;
+}
 
-#todoapp .content .mark-all-done {
+#resourceapp .content .mark-all-done {
     margin-left: 8px;
 }
 
@@ -472,3 +445,17 @@ label[for='toggle-all'] {
     color: #888;
 }
 
+#resourceapp .resource-edit {
+	color: #7991FF;
+	position: absolute;
+    top: 10px;
+    right: 90px;
+    bottom: 0;
+    width: 80px;
+    height: 40px;
+}
+
+#resourceapp #newResource {
+	color: #7991FF;
+	font-size: 20px;
+}

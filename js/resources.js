@@ -1,6 +1,6 @@
-// An example Parse.js Backbone application based on the todo app by
+// An example Parse.js Backbone application based on the resource app by
 // [Jérôme Gravel-Niquet](http://jgn.me/). This demo uses Parse to persist
-// the todo items and provide user authentication and sessions.
+// the resource items and provide user authentication and sessions.
 
 $(function() {
 
@@ -20,7 +20,7 @@ $(function() {
 	  PhoneNumber : "111-666-9999",
     },
 
-    // Ensure that each todo created has `content`.
+    // Ensure that each resource created has `content`.
     initialize: function() {
       if (!this.get("Name")) {
         this.set({"Name": this.defaults.Name});
@@ -68,7 +68,7 @@ $(function() {
   // Resource Item View
   // --------------
 
-  // The DOM element for a todo item...
+  // The DOM element for a resource item...
   var ResourceView = Parse.View.extend({
 
     //... is a list tag.
@@ -79,11 +79,11 @@ $(function() {
 
     // The DOM events specific to an item.
     events: {
-      "click .toggle"              : "toggleDone",
-      "dblclick label.todo-content" : "edit",
-      "click .todo-destroy"   : "clear",
+      //"click .toggle"              : "toggleDone",
+      //"dblclick label.resource-content" : "edit",
+      "click .resource-destroy"   : "clear",
 	  "click .resource-edit"   : "editResource",
-      "keypress .edit"      : "updateOnEnter",
+      //"keypress .edit"      : "updateOnEnter",
       "blur .edit"          : "close"
     },
 
@@ -121,7 +121,7 @@ $(function() {
 		form.setModel(this.model);
     },
 
-    // Close the `"editing"` mode, saving changes to the todo.
+    // Close the `"editing"` mode, saving changes to the resource.
     close: function() {
       this.model.save({content: this.input.val()});
       $(this.el).removeClass("editing");
@@ -142,7 +142,7 @@ $(function() {
   // The Application
   // ---------------
 
-  // The main view that lets a user manage their todo items
+  // The main view that lets a user manage their resource items
   var ManageResourcesView = Parse.View.extend({
 
     // Our template for the line of statistics at the bottom of the app.
@@ -150,11 +150,11 @@ $(function() {
 
     // Delegated events for creating new items, and clearing completed ones.
     events: {
-      "keypress #new-todo":  "createOnEnter",
-      "click #clear-completed": "clearCompleted",
-      "click #toggle-all": "toggleAllComplete",
+     // "keypress #new-resource":  "createOnEnter",
+     // "click #clear-completed": "clearCompleted",
+     // "click #toggle-all": "toggleAllComplete",
       "click .log-out": "logOut",
-      "click ul#filters a": "selectFilter",
+     // "click ul#filters a": "selectFilter",
 	  "click #newResource": "showNewResource"
     },
 
@@ -162,22 +162,22 @@ $(function() {
 
     // At initialization we bind to the relevant events on the `Todos`
     // collection, when items are added or changed. Kick things off by
-    // loading any preexisting todos that might be saved to Parse.
+    // loading any preexisting resources that might be saved to Parse.
     initialize: function() {
       var self = this;
 
       _.bindAll(this, 'addOne', 'addAll', 'addSome', 'render', 'toggleAllComplete', 'logOut', 'createOnEnter', 'showNewResource');
 
-      // Main todo management template
-      this.$el.html(_.template($("#manage-todos-template").html()));
+      // Main resource management template
+      this.$el.html(_.template($("#manage-resources-template").html()));
       
-   //   this.input = this.$("#new-todo");
+   //   this.input = this.$("#new-resource");
    //   this.allCheckbox = this.$("#toggle-all")[0];
 
       // Create our collection of Todos
       this.resources = new ResourceList;
 
-      // Setup the query for the collection to look for todos from the current user
+      // Setup the query for the collection to look for resources from the current user
       this.resources.query = new Parse.Query(Resource);
       //this.resources.query.equalTo("user", Parse.User.current());
         
@@ -185,7 +185,7 @@ $(function() {
 //      this.resources.bind('reset',   this.addAll);
 //      this.resources.bind('all',     this.render);
 
-      // Fetch all the todo items for this user
+      // Fetch all the resource items for this user
       this.resources.fetch({
         success: function(myObject) {
 			this.$("#resource-list").html("");
@@ -215,13 +215,13 @@ $(function() {
     // Re-rendering the App just means refreshing the statistics -- the rest
     // of the app doesn't change.
     render: function() {
-      var done = this.todos.done().length;
-      var remaining = this.todos.remaining().length;
+      //var done = this.resources.done().length;
+      //var remaining = this.resources.remaining().length;
 
-      this.$('#todo-stats').html(this.statsTemplate({
-        total:      this.todos.length,
-        done:       done,
-        remaining:  remaining
+      this.$('#resource-stats').html(this.statsTemplate({
+        total:      this.resources.length,
+        //done:       done,
+        //remaining:  remaining
       }));
 
       this.delegateEvents();
@@ -250,30 +250,30 @@ $(function() {
       }
     },
 
-    // Resets the filters to display all todos
+    // Resets the filters to display all resources
     resetFilters: function() {
       this.$("ul#filters a").removeClass("selected");
       this.$("ul#filters a#all").addClass("selected");
       this.addAll();
     },
 
-    // Add a single todo item to the list by creating a view for it, and
+    // Add a single resource item to the list by creating a view for it, and
     // appending its element to the `<ul>`.
-    addOne: function(todo) {
-      var view = new ResourceView({model: todo});
-      this.$("#todo-list").append(view.render().el);
+    addOne: function(resource) {
+      var view = new ResourceView({model: resource});
+      this.$("#resource-list").append(view.render().el);
     },
 
     // Add all items in the Todos collection at once.
     addAll: function(collection, filter) {
-      this.$("#todo-list").html("");
+      this.$("#resource-list").html("");
       this.resources.each(this.addOne);
     },
 
-    // Only adds some todos, based on a filtering function that is passed in
+    // Only adds some resources, based on a filtering function that is passed in
     addSome: function(filter) {
       var self = this;
-      this.$("#todo-list").html("");
+      this.$("#resource-list").html("");
       this.resources.each(function(item) { self.addOne(item) });
     },
 
@@ -293,15 +293,15 @@ $(function() {
       this.resetFilters();
     },
 
-    // Clear all done todo items, destroying their models.
+    // Clear all done resource items, destroying their models.
     clearCompleted: function() {
-      _.each(this.resources.done(), function(todo){ todo.destroy(); });
+      _.each(this.resources.done(), function(resource){ resource.destroy(); });
       return false;
     },
 
     toggleAllComplete: function () {
       var done = this.allCheckbox.checked;
-      //this.resources.each(function (todo) { todo.save({'done': done}); });
+      //this.resources.each(function (resource) { resource.save({'done': done}); });
     },
 	
 	showNewResource: function () {
@@ -429,7 +429,7 @@ $(function() {
   var AppView = Parse.View.extend({
     // Instead of generating a new element, bind to the existing skeleton of
     // the App already present in the HTML.
-    el: $("#todoapp"),
+    el: $("#resourceapp"),
 
     initialize: function() {
       this.render();
