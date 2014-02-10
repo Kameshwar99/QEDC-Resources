@@ -179,17 +179,14 @@ $(function() {
         success: function(myObject) {
 			this.$("#resource-list").html("");
 			for(var i=0; i<myObject.length;i++) {
-			
 				var view = new ResourceView({model: myObject.models[i]});
                 this.$("#resource-list").append(view.render().el);
 			}
        },
-       error: function(myObject, error) {
-          alert(error);
+       error: function(error) {
+          //alert('Error' + error.code);
        }
      });
-   
-      state.on("change", this.addAll, this);
     },
 
     // Logs out the user and shows the login view
@@ -326,10 +323,12 @@ $(function() {
 	  this.model.set("Specialty", this.$("#specialty").val());
 	  this.model.save();
 	  
-	   new ManageResourcesView();
+	   
        self.undelegateEvents();
        delete self;
+	   new ManageResourcesView();
 	},
+	
 	
 	getCheckboxString: function(){
 	 var checkboxString="";
