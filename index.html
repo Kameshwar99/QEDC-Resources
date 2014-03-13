@@ -8,6 +8,7 @@
     <script src="js/underscore-1.1.6.js"></script>
     <script src="http://www.parsecdn.com/js/parse-1.2.13.min.js"></script>
     <script src="js/resources.js"></script>
+	<script src="js/validation.js"></script>
   </head>
 
   <body>
@@ -102,16 +103,23 @@
 	<script type="text/template" id="form-entry-template">
      <div class ="resource-entry-form">
 	 	<form class="entry-form">
-	      <label id="form-label" >Name</label><input type="text" id="name" style="width:200px;"/><br>
-	      <label id="form-label">PhoneNumber</label><input type="text" id="telephone-number"style="width:200px;"/><br>
-		  <label id="form-label">Website</label><input type="text" id="website" style="width:200px;"/><br>
-		  <label id="form-label">Twitter</label><input type="text" id="twitter" style="width:200px;"/> <br>
+		  
+		  <label id="form-label" for "name">Name</label><input type="text" name ="name" id="name" onblur ="validateName(name)" style="width:200px;" required /><br>
+		  <span id="nameError" style="display: none;">You can only use alphabetic characters, hyphens and apostrophes</span>
+	      <label id="form-label" for "telephone-number">Phone Number</label><input type="text" name ="telephone-number" id="telephone-number" onblur ="validateTelephoneNumber(name)" style="width:200px;" required /><br>
+		  <span id="telephone-numberError" style="display: none;">Please Enter the Telephone Number in the format xxx-xxx-xxxx</span>
+		  <label id="form-label" for "email">eMail</label><input type="text" name ="email" id="email" onblur ="validateEmail(name)" style="width:200px;" required /><br>
+		  <span id="emailError" style="display: none;">Please Enter the email address in the format xxx@xxx.xxxx</span>		  
+		  <label id="form-label" for "website">Website</label><input type="text" name ="website" id="website" onblur ="validateWebSite(name)" style="width:200px;" />
+		  <span id="websiteError" style="display: none;">Please Enter the website address in the format http://xxx.yyy.xxxx</span><br>
+		  <label id="form-label" for "twitter">Twitter</label><input type="text" name ="twitter" id="twitter" onblur ="validateTwitter(name)" style="width:200px;" /> <br>
+		  <span id="twitterError" style="display: none;">Please Enter the twitter handle in the format @xxxxyyyyy</span><br>
 		  <label id="form-label">Facebook</label><input type="text" id="facebook" style="width:200px;"/> <br>
 		  <label id="form-label">Language</label><input type ="checkbox" id="english-checkbox"/> English 
 		  <input type ="checkbox" id="spanish-checkbox"/>Spanish<input type ="checkbox" id="mandarin-checkbox"/> Mandarin<input type ="checkbox" id="cantonese-checkbox"/> Cantonese <br>
 		  
-		  <label id="form-label">Address</label><input type="text" id="address" style="width:250px;"/><br>
-		  <label id="form-label">City</label><input type="text" id="city" />State<input type="text" id="state" /> Zip<input type="text" id="zip" /> <br>
+		  <label id="form-label">Address</label><input type="text" id="address" style="width:250px;" required /><br>
+		  <label id="form-label">City</label><input type="text" id="city"  required />State<input type="text" id="state"  required/> Zip<input type="text" id="zip" required /> <br>
 		  <label id="form-label" class="description-label">Description</label><textarea rows="3" cols="50" id="description" /> <br>
 		  <label id="form-label">Specialty</label><input type="text" id="specialty" style="width:250px;"/> <br>
 		  

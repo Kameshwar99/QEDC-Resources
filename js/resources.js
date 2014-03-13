@@ -1,5 +1,5 @@
 // An example Parse.js Backbone application based on the resource app by
-// [Jérôme Gravel-Niquet](http://jgn.me/). This demo uses Parse to persist
+// This application uses Parse to persist
 // the resource items and provide user authentication and sessions.
 
 $(function() {
@@ -18,7 +18,8 @@ $(function() {
     defaults: {
 	  Name: "cc",
 	  PhoneNumber: "111-666-9999",
-	  Language: "English"
+	  Language: "English",
+	  eMail:"uskr@hotmail.com"
     },
 
     // Ensure that each resource created has `content`.
@@ -32,6 +33,9 @@ $(function() {
 	 if (!this.get("Language")) {
         this.set({"Language": this.defaults.Language});
 		}
+	 if (!this.get("eMail")) {
+        this.set({"eMail": this.defaults.eMail});
+		}	
      		
     },
 
@@ -311,6 +315,7 @@ $(function() {
 
 	  this.model.set("Name", this.$("#name").val());
 	  this.model.set("PhoneNumber", this.$("#telephone-number").val());
+	  this.model.set("eMail", this.$("#email").val());	  
 	  this.model.set("Language",this.getCheckboxString());
 	  this.model.set("Website", this.$("#website").val());
 	  this.model.set("Twitter", this.$("#twitter").val());
@@ -367,6 +372,7 @@ $(function() {
 		this.model = model;
 		this.$("#name").val(model.get("Name"));
 		this.$("#telephone-number").val(model.get("PhoneNumber"));
+		this.$("#email").val(model.get("eMail"));
 		this.setCheckboxes(model.get("Language"));
 		this.$("#website").val(model.get("Website"));
 		this.$("#twitter").val(model.get("Twitter"));
